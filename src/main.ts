@@ -9,7 +9,9 @@ import 'primeicons/primeicons.css'
 import './styles/tailwind.css'
 import App from './App.vue'
 import router from './router'
-import * as lucideIcons from 'lucide-vue-next'
+
+// lucide (replaced deprecated package)
+import { Home, Phone } from '@lucide/vue'
 
 const app = createApp(App)
 const head = createHead()
@@ -20,10 +22,8 @@ app.use(PrimeVue)
 app.component('PButton', Button)
 app.component('PCard', Card)
 
-// Register lucide globally (register a few common icons as example)
-import HomeIcon from 'lucide-vue-next/dist/esm/icons/home.js'
-import PhoneIcon from 'lucide-vue-next/dist/esm/icons/phone.js'
-app.component('IconHome', HomeIcon)
-app.component('IconPhone', PhoneIcon)
+// Register a couple of icons globally; import and add more as needed
+app.component('IconHome', Home)
+app.component('IconPhone', Phone)
 
 app.mount('#app')
