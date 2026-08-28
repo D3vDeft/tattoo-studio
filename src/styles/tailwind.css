@@ -1,0 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* estilos globales adicionales */
+body { @apply bg-white text-gray-800 antialiased; }
