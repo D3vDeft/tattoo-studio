@@ -5,6 +5,7 @@ Plantilla Vue 3 + TypeScript para estudio de tatuajes. Incluye Tailwind, PrimeVu
 Cambios recientes para compatibilidad pnpm:
 - Se ha fijado tailwindcss a la versión 3.4.19 (serie 3 LTS) para evitar errores de resolución.
 - Reemplazado paquete deprecated `lucide-vue-next` por `@lucide/vue` y actualizadas las importaciones en `src/main.ts`.
+- Ajustado a `@lucide/vue@^1.35.0` para usar la versión publicada en el registro.
 
 Pasos rápidos (usando pnpm):
 
