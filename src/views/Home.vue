@@ -1,81 +1,86 @@
 <template>
-  <section>
-    <!-- Hero -->
-    <div class="relative bg-cover bg-center h-[60vh] flex items-center" :style="`background-image: url(${heroUrl})`">
-      <div class="container mx-auto text-white">
-        <div class="max-w-xl bg-black/50 p-6 rounded">
-          <h1 class="text-4xl font-extrabold">Tatuajes personalizados con carácter</h1>
-          <p class="mt-3">En El Manicomio Tattoo convertimos tus ideas en piezas únicas. Técnica, higiene y creatividad al servicio de tu piel.</p>
-          <router-link to="/contact"><PButton label="Pedir cita" class="mt-4" /></router-link>
+  <main>
+    <Header />
+    <Hero />
+
+    <section id="about" class="container mx-auto px-4 py-12">
+      <div class="grid md:grid-cols-2 gap-8 items-center">
+        <div>
+          <h2 class="text-3xl h-gothic">Nuestro enfoque</h2>
+          <p class="mt-4 text-neutral-300">En El Manicomio Tattoo combinamos la tradición del tatuaje con una estética oscura y refinada. Cada proyecto pasa por un proceso de diseño y asesoramiento para asegurar resultados duraderos y significativos.</p>
+          <ul class="mt-4 text-neutral-400 list-disc pl-5">
+            <li>Protocolos estrictos de higiene</li>
+            <li>Diseños personalizados</li>
+            <li>Asesoramiento antes y después del tatuaje</li>
+          </ul>
+        </div>
+        <div>
+          <img src="https://picsum.photos/seed/about/800/600" alt="about" class="w-full h-64 object-cover rounded" loading="lazy" />
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- About -->
-    <div class="container mx-auto py-10">
-      <PCard>
-        <template #title><h2 class="text-2xl">Nuestro enfoque</h2></template>
-        <p>Somos un estudio de tatuajes centrado en la calidad artística y la seguridad. Nuestro equipo combina estilos tradicionales y contemporáneos para ofrecer trabajos personalizados que envejecen bien y te representan.</p>
-      </PCard>
-    </div>
-
-    <!-- Servicios (resumen) -->
-    <div class="container mx-auto py-10">
-      <h2 class="text-2xl mb-4">Servicios</h2>
-      <div class="grid md:grid-cols-3 gap-6">
-        <PCard v-for="s in services" :key="s.title">
-          <template #title><h3 class="text-lg font-semibold">{{ s.title }}</h3></template>
-          <p class="text-sm">{{ s.excerpt }}</p>
-        </PCard>
+    <section id="services" class="container mx-auto px-4 py-12">
+      <h2 class="text-3xl h-gothic mb-6">Servicios</h2>
+      <div class="grid md:grid-cols-3 gap-4">
+        <ServiceCard title="Diseño personalizado" excerpt="Creación de diseños únicos a medida según tu idea y estilo." icon="✠" />
+        <ServiceCard title="Cover-up" excerpt="Soluciones creativas para cubrir tatuajes antiguos o no deseados." icon="☩" />
+        <ServiceCard title="Micropigmentación" excerpt="Retoques y técnicas de micropigmentación estética para detalles impecables." icon="✥" />
       </div>
-    </div>
+    </section>
 
-    <!-- Galería destacada -->
-    <div class="container mx-auto py-10">
-      <h2 class="text-2xl mb-4">Galería destacada</h2>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div v-for="(img, i) in gallery" :key="i" class="h-44 bg-gray-200 rounded overflow-hidden">
-          <img :src="img" :alt="`Tatuaje ${i+1}`" class="w-full h-full object-cover" loading="lazy" />
+    <section id="gallery" class="container mx-auto px-4 py-12">
+      <h2 class="text-3xl h-gothic mb-6">Galería</h2>
+      <GalleryMasonry />
+    </section>
+
+    <TestimonialSlider />
+
+    <section id="contact" class="container mx-auto px-4 py-12">
+      <h2 class="text-3xl h-gothic mb-6">Contacto</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <p class="text-neutral-400">Reserva tu cita o envíanos tu idea. Responderemos con disponibilidad y presupuesto.</p>
+          <div class="mt-4 text-neutral-300">
+            <p><strong>Tel:</strong> +34 600 000 000</p>
+            <p><strong>Dirección:</strong> Calle Falsa 123, Ciudad</p>
+          </div>
+        </div>
+        <div>
+          <form @submit.prevent="submit" class="space-y-4">
+            <input v-model="form.name" placeholder="Nombre" class="w-full p-3 rounded bg-neutral-900 border border-neutral-800" required />
+            <input v-model="form.email" type="email" placeholder="Email" class="w-full p-3 rounded bg-neutral-900 border border-neutral-800" required />
+            <textarea v-model="form.message" placeholder="Describe tu idea" rows="5" class="w-full p-3 rounded bg-neutral-900 border border-neutral-800" required></textarea>
+            <button class="px-6 py-3 bg-neon text-black rounded neon-glow">Enviar</button>
+          </form>
         </div>
       </div>
-      <div class="mt-4">
-        <router-link to="/gallery"><PButton label="Ver más" /></router-link>
-      </div>
-    </div>
-  </section>
+    </section>
+
+    <Footer />
+  </main>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue'
-import { useSeo } from '@/composables/useSeo'
+import { defineComponent, reactive } from 'vue'
+import Header from '@/components/Header.vue'
+import Hero from '@/components/Hero.vue'
+import ServiceCard from '@/components/ServiceCard.vue'
+import GalleryMasonry from '@/components/GalleryMasonry.vue'
+import TestimonialSlider from '@/components/TestimonialSlider.vue'
+import Footer from '@/components/Footer.vue'
 
 export default defineComponent({
-  setup() {
-    useSeo({
-      title: 'El Manicomio Tattoo — Tatuajes personalizados',
-      description: 'Estudio de tatuajes especialista en diseños personalizados, cover-ups y trabajos de detalle. Reserva tu cita y transforma tu idea en arte.'
-    })
-
-    const services = ref([
-      { title: 'Diseño personalizado', excerpt: 'Creación de diseños únicos a medida según tu idea y estilo.' },
-      { title: 'Cover-up y correcciones', excerpt: 'Soluciones creativas para cubrir tatuajes antiguos o no deseados.' },
-      { title: 'Micropigmentación y retoques', excerpt: 'Trabajo de detalle, color y retoques para mantener tu tatuaje impecable.' }
-    ])
-
-    // Usamos URLs de prueba (puedes sustituir por las URLs reales del sitio)
-    const heroUrl = 'https://picsum.photos/id/1011/1600/900'
-    const gallery = ref<string[]>([])
-
-    onMounted(() => {
-      // generar 8 imágenes de ejemplo (puedes sustituir por URLs del sitio oficial)
-      const imgs: string[] = []
-      for (let i = 0; i < 8; i++) {
-        imgs.push(`https://picsum.photos/seed/manicomio${i}/800/600`)
-      }
-      gallery.value = imgs
-    })
-
-    return { services, gallery, heroUrl }
+  components: { Header, Hero, ServiceCard, GalleryMasonry, TestimonialSlider, Footer },
+  setup(){
+    const form = reactive({ name: '', email: '', message: '' })
+    function submit(){
+      alert('Gracias. Mensaje enviado (demo).')
+      form.name = ''
+      form.email = ''
+      form.message = ''
+    }
+    return { form, submit }
   }
 })
 </script>
